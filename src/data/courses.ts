@@ -7,4 +7,5 @@ export type Registration = {
   email: string
   course: Course
   studyGoal: string
+  ipsative:string
 }

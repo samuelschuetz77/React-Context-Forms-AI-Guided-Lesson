@@ -35,7 +35,9 @@ If lots of components next to eachother all need the same data
 
 5. What did you add independently, and how did you test it?
 
-I added a new field called study goal. If its less than 10 characters and gets an error:  "Describe your study goal in at least 10 characters." 
+Me and codex added a new field called study goal. If its less than 10 characters and gets an error:  "Describe your study goal in at least 10 characters." 
 
-My study goal with this class is to make awesome web applications using mostly ai, dive into controversy about best architectures and build lightning fast applications! 
+Then I walked through what it added and did a new one called Ipsative, i tested it by making sure less than 12 or greater than 77 chars didn't work 
+
+My outcome goal with this class is to make awesome web applications using mostly ai, dive into controversy about best architectures and build lightning fast applications!
 

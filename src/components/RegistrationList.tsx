@@ -24,7 +24,9 @@ export default function RegistrationList() {
         <ul>
           {visibleRegistrations.map(registration => (
             <li key={registration.id}>
-              <p><strong>{registration.name}</strong><br />{registration.email}<br />{registration.course}</p>
+              <p><strong>{registration.name}</strong><br />
+              {registration.email}<br />{registration.course}</p>
+              <p>Ipsative Notes: {registration.ipsative}</p>
               <p>Study goal: {registration.studyGoal}</p>
               <button type="button" onClick={() => removeRegistration(registration.id)}
                 aria-label={`Remove ${registration.name} from ${registration.course}`}>Remove</button>

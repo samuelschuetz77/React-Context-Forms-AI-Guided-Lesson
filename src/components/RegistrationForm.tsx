@@ -9,8 +9,9 @@ export default function RegistrationForm() {
   const [email, setEmail] = useState('');
   const [course, setCourse] = useState<Course|''>('');
   const [studyGoal, setStudyGoal] = useState('');
-  const [errors, setErrors] = useState<{name?: string; email?: string; course?: string; studyGoal?: string}>({});
+  const [errors, setErrors] = useState<{ipsative?:string; name?: string; email?: string; course?: string; studyGoal?: string}>({});
   const [success, setSuccess] = useState('');
+  const [ipsative, setIpsative] = useState('');
 
   const refresh_cooly = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,11 +20,12 @@ export default function RegistrationForm() {
     const trimmedName = name.trim();
     const trimmedEmail = email.trim();
     const trimmedStudyGoal = studyGoal.trim();
+    const trimmedIpsative = ipsative.trim();
 
     if (trimmedName.length < 2) {
       nextErrors.name = 'Name must have at least two characters.';
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) { 
       nextErrors.email = 'Enter a valid email address, like alex@example.com.';
     }
     if (!course) {
@@ -32,16 +34,23 @@ export default function RegistrationForm() {
     if (trimmedStudyGoal.length < 10) {
       nextErrors.studyGoal = 'Describe your study goal in at least 10 characters.';
     }
+    
+    if (trimmedIpsative.length > 77 || trimmedIpsative.length < 11 )
+      nextErrors.ipsative = 'Statement must be between 12 and 32 words';
+    else if (!/\bI (am|can)\b/i.test(trimmedIpsative)) {
+      nextErrors.ipsative = 'Include "I can" or "I am".';
+    }
 
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0 || !course) return;
 
-    addRegistration({ name: trimmedName, email: trimmedEmail, course, studyGoal: trimmedStudyGoal });
+    addRegistration({ name: trimmedName, email: trimmedEmail, course, studyGoal: trimmedStudyGoal, ipsative: trimmedIpsative });
     setSuccess(`Thanks, ${trimmedName}! You are registered for ${course}.`);
     setName('');
     setEmail('');
     setCourse('');
     setStudyGoal('');
+    setIpsative('');
   };
   return (
     <section className="panel">
@@ -64,6 +73,12 @@ export default function RegistrationForm() {
           {courses.map(course => <option key={course} value={course}>{course}</option>)}
         </select>
         {errors.course && <span id="course-error" className="error" role="alert">{errors.course}</span>}
+         <label htmlFor='ipsative'>Ipsative Notes</label>
+         <input id = "ipsative" name = "ipsative" value={ipsative}
+           placeholder="Self-assesment notes on quality"
+           onChange={event => setIpsative(event.target.value)}
+           aria-invalid={Boolean(errors.ipsative)} aria-describedby={errors.ipsative ? 'ipsative-error' : undefined}/>
+           {errors.ipsative && <span id ="ipsative-error" className="error" role="alert">{errors.ipsative}</span>}
         <label htmlFor="study-goal">Study goal</label>
         <input id="study-goal" name="studyGoal" value={studyGoal}
           placeholder="Learn to build accessible websites"
@@ -72,6 +87,7 @@ export default function RegistrationForm() {
         {errors.studyGoal && <span id="study-goal-error" className="error" role="alert">{errors.studyGoal}</span>}
         <button type="submit">Register</button>
         {success && <p className="success" role="status">{success}</p>}
+       
       </form>
     </section>
   )
